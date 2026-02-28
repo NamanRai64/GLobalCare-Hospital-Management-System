@@ -1,20 +1,66 @@
-<<<<<<< HEAD
-# React + Vite
+# 🏥 Hospital Management System (HMS)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A robust and scalable software solution designed to digitize healthcare operations. This system streamlines patient intake, automates clinical workflows, and manages administrative tasks such as billing and inventory to improve overall hospital efficiency.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Key Features
 
-## React Compiler
+* **Role-Based Access Control (RBAC):** Distinct dashboards and permissions for Admins, Doctors, Nurses, and Receptionists.
+* **Patient Records Management:** Centralized Electronic Health Records (EHR) including medical history and prescriptions.
+* **Appointment Lifecycle:** Real-time scheduling, status updates (Pending/Confirmed/Treated), and automated queuing.
+* **Billing & Finance:** Dynamic invoice generation based on consultation fees, lab tests, and room stay.
+* **Pharmacy & Inventory:** Track medical supplies and drug stocks with low-inventory alerts.
+* **Lab Management:** Record and manage diagnostic test results and reports.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🏗 System Architecture
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
-# GLobalCare-Hospital-Management-System
+The system is built using a layered architecture to ensure separation of concerns and data security.
 
+
+
+1.  **Presentation Layer:** Interactive UI for staff and patients.
+2.  **Service Layer:** Business logic for appointment validation, billing calculations, and authentication.
+3.  **Data Layer:** Relational database management for persistent storage of sensitive medical data.
+
+---
+
+## 🛠 Tech Stack
+
+| Component      | Technology                                    |
+| :------------- | :-------------------------------------------- |
+| **Backend** | Java (Spring Boot) / Python / Node.js         |
+| **Frontend** | React.js / Angular / HTML5 & CSS3             |
+| **Database** | MySQL / PostgreSQL                            |
+| **API Testing**| Postman                                       |
+| **Version Control** | Git                                      |
+
+---
+
+## 🏁 Getting Started
+
+### Prerequisites
+* **Language Environment:** [e.g., JDK 17+ / Python 3.10+]
+* **Database:** [e.g., MySQL 8.0]
+* **Build Tool:** [e.g., Maven / Gradle / pip]
+
+### Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/your-username/hospital-management-system.git](https://github.com/your-username/hospital-management-system.git)
+   cd hospital-management-system
+   ```
+2. **Configure Database**
+* Create a new database: CREATE DATABASE globalcare_db;
+* Update src/main/resources/application.properties with your database credentials.
+* Run the Application
+
+3. 📸 **Interface Preview**
+* Admin Dashboard: Overview of hospital statistics and staff management.
+* Patient Portal: Streamlined interface for medical history and appointment booking.
+
+4. 📄 **License**
+This project is licensed under the MIT License - see the  file for details.
