@@ -1,0 +1,60 @@
+# Implementation Plan - Fullstack HMS Migration
+
+Transition the current frontend-only HMS application into a robust fullstack system. This will provide persistent data storage, role-based security, and support for complex queries like medical reports and machine maintenance schedules.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Database Choice**: As per the project constraint, we will use **MySQL**. This is well-suited for the complex relational queries (Patient -> Doctor -> Medical Records) required by a hospital management system.
+> **Backend Choice**: Since you already have an initial skeleton for **Node.js/Express**, I will build upon that as it integrates seamlessly with your React code and works perfectly with MySQL via Prisma.
+
+## Proposed Changes
+
+### [Backend] server
+
+Initialize and expand the Node.js backend.
+
+#### [MODIFY] [schema.prisma](file:///c:/Users/naman/HMS/server/prisma/schema.prisma)
+- Update provider to `mysql`.
+- Define models:
+    - `User`: Handles authentication and roles (`DOCTOR`, `NURSE`, `ADMIN`, `PATIENT`).
+    - [Patient](file:///c:/Users/naman/HMS/src/pages/EmployeeDashboard.jsx#36-41): Demographics linked to `User`.
+    - [Employee](file:///c:/Users/naman/HMS/src/pages/EmployeeDashboard.jsx#27-457): Staff details linked to `User`.
+    - `MedicalRecord`: Diagnoses and admission status.
+    - `LabResult`: Linked to medical records.
+    - `Appointment`: Scheduling link between Doctor and Patient.
+    - `Machine`: Inventory/Equipment tracking.
+    - `MaintenanceSchedule`: Logs for machine maintenance, linked to `Machine`.
+
+#### [NEW] [index.js](file:///c:/Users/naman/HMS/server/index.js)
+- Core Express server setup.
+- Routes for `/api/patients`, `/api/records`, `/api/appointments`, and `/api/machines`.
+
+#### [NEW] [seed.js](file:///c:/Users/naman/HMS/server/prisma/seed.js)
+- A script to migrate existing data from [src/data/hmsData.js](file:///c:/Users/naman/HMS/src/data/hmsData.js) into the MySQL database.
+
+---
+
+### [Frontend] src
+
+Connect the UI to the new backend.
+
+#### [MODIFY] [EmployeeDashboard.jsx](file:///c:/Users/naman/HMS/src/pages/EmployeeDashboard.jsx)
+- Replace mock data imports with `useEffect` fetch calls.
+- Add Machine Maintenance view logic.
+
+#### [NEW] [api.js](file:///c:/Users/naman/HMS/src/services/api.js)
+- A central service to handle axios/fetch calls with proper error handling and base URL configuration.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- **Database Seeding**: Run `npx prisma db seed` and verify counts in MySQL.
+- **API Endpoint Check**: Use `curl` or a test script to hit `/api/clinical/1001` (Dr. John Doe's records) and verify the "complex query" returns joined Patient, Record, and Lab data correctly.
+
+### Manual Verification
+1. **Login Flow**: Log in as a Doctor and verify that `My Patients` only shows patients assigned to that ID in the database.
+2. **Machine Maintenance**: Navigate to the new maintenance view and verify that machine status reflects real-time DB values.
+3. **Data Persistence**: Update a medical report, refresh the page, and ensure the change persists.
