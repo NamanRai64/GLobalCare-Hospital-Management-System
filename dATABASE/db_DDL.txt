@@ -1,0 +1,617 @@
+CREATE TABLE CorporateGroup (
+    group_id BIGINT PRIMARY KEY,
+    group_name VARCHAR(255),
+    registration_number VARCHAR(100),
+    headquarters_address TEXT,
+    contact_email VARCHAR(255),
+    contact_phone VARCHAR(50),
+    founded_date DATE
+);
+INSERT INTO CorporateGroup (group_id, group_name, registration_number, headquarters_address, contact_email, contact_phone, founded_date)
+VALUES 
+(1, 'Global Nexus Healthcare Group', 'REG-882910', '101 Medical Plaza, New York, NY', 'info@nexushealth.com', '+1-555-0100', '1995-05-20');
+
+CREATE TABLE BranchHospital (
+    branch_id BIGINT PRIMARY KEY,
+    group_id BIGINT,
+    branch_code VARCHAR(50),
+    branch_name VARCHAR(255),
+    license_number VARCHAR(100),
+    address TEXT,
+    city VARCHAR(100),
+    state VARCHAR(100),
+    country VARCHAR(100),
+    bed_capacity INT, 
+    FOREIGN KEY (group_id) REFERENCES CorporateGroup(group_id)
+);
+INSERT INTO BranchHospital (branch_id, group_id, branch_code, branch_name, license_number, address, city, state, country, bed_capacity)
+VALUES 
+(101, 1, 'GNHG-NY-01', 'Nexus Mumbai Central', 'LIC-MB-990', '450 East 23rd St', 'New York', 'NY', 'INDIA', 500),
+(102, 1, 'GNHG-NJ-02', 'Nexus Chennai Heights', 'LIC-CHN-441', '12 Summit Ave', 'Jersey City', 'NJ', 'INDIA', 250),
+(103, 1, 'GNHG-NJ-03', 'Global Care Kolkata East', 'LIC-KALK-112', '77 N Michigan Ave', 'Chicago', 'IL', 'INDIA', 400),
+(104, 1, 'GNHG-NJ-04', 'Nexus Delhi Central', 'LIC-DEL-990', '450 East 23rd St', 'New York', 'NY', 'INDIA', 400),
+(105, 1, 'GNHG-NJ-05', 'Nexus Zydus Heights', 'LIC-NJ-441', '12 Summit Ave', 'Hyderabad', 'NJ', 'INDIA', 250),
+(106, 1, 'GNHG-NJ-06', 'Nexus Manhattan Central', 'LIC-NY-990', '450 East 23rd St', 'New York', 'NY', 'USA', 500),
+(107, 1, 'GNHG-NJ-07', 'Nexus Jersey Heights', 'LIC-NJ-441', '12 Summit Ave', 'Jersey City', 'NJ', 'USA', 250),
+(108, 1, 'GNHG-NJ-08', 'Gleneagles HealthCity', 'LIC-PUNE-112', '77 N London Ave', 'London', 'IL', 'United Kingdom', 200);
+
+CREATE TABLE Department (
+    department_id BIGINT PRIMARY KEY,
+    branch_id BIGINT,
+    department_name VARCHAR(255),
+    department_type VARCHAR(100),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+INSERT INTO Department (department_id, branch_id, department_name, department_type)
+VALUES 
+(2001, 101, 'Emergency Department (ED)', 'Critical Care'),
+(2002, 101, 'General Medicine', 'General Care'),
+(2003, 101, 'General Surgery', 'Surgical'),
+(2004, 101, 'Cardiology', 'Specialized'),
+(2005, 101, 'Orthopedics', 'Surgical'),
+(2006, 101, 'Obstetrics & Gynecology (OB-GYN)', 'Specialized'),
+(2007, 102, 'Pediatrics', 'General Care'),
+(2008, 102, 'Neurology', 'Specialized'),
+(2009, 102, 'Psychiatry', 'Behavioral Health'),
+(2010, 103, 'Oncology', 'Specialized'),
+(2011, 103, 'ENT (Ear, Nose, Throat)', 'Specialized'),
+(2012, 103, 'Ophthalmology', 'Specialized'),
+(2013, 103, 'Urology', 'Specialized'),
+(2014, 103, 'Gastroenterology', 'Specialized'),
+(2015, 101, 'Geriatrics', 'General Care'),
+(2016, 101, 'Intensive Care Unit (ICU)', 'Critical Care'),
+(2017, 101, 'Neonatal Intensive Care Unit (NICU)', 'Critical Care');
+
+INSERT INTO Department (department_id, branch_id, department_name, department_type)
+VALUES 
+(3001, 101, 'Radiology & Imaging', 'Diagnostic'),
+(3002, 101, 'Laboratory/Pathology', 'Diagnostic'),
+(3003, 101, 'Pharmacy', 'Support'),
+(3004, 102, 'Physiotherapy', 'Rehabilitation'),
+(3005, 103, 'Anesthetics', 'Clinical Support');
+
+INSERT INTO Department (department_id, branch_id, department_name, department_type)
+VALUES 
+(4001, 101, 'Nursing Department', 'Management'),
+(4002, 101, 'Outpatient Department (OPD)', 'Clinical Services'),
+(4003, 101, 'Inpatient Services (IP)', 'Clinical Services'),
+(4004, 102, 'Medical Records', 'Administrative'),
+(4005, 102, 'Dietary/Nutrition', 'Support'),
+(4006, 103, 'Housekeeping & Maintenance', 'Facility Support'),
+(4007, 103, 'Human Resources (HR)', 'Administrative'),
+(4008, 103, 'Information Technology (IT)', 'Technical Support');
+
+CREATE TABLE BranchPolicy (
+    policy_id BIGINT PRIMARY KEY,
+    branch_id BIGINT,
+    policy_name VARCHAR(255),
+    effective_date DATE,
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+INSERT INTO BranchPolicy (policy_id, branch_id, policy_name, effective_date)
+VALUES 
+-- Policies for Nexus Manhattan Central (Branch 101)
+(5001, 101, 'Patient Confidentiality & HIPAA Compliance', '2024-01-01'),
+(5002, 101, 'Emergency Triage & Rapid Response Protocol', '2024-02-15'),
+(5003, 101, 'Infection Control & Sterilization Standards', '2024-03-01'),
+(5004, 101, 'Physician On-Call & Shift Handover Policy', '2024-01-10'),
+
+-- Policies for Nexus Jersey Heights (Branch 102)
+(5005, 102, 'Pediatric Safety & Code Pink Protocol', '2024-01-20'),
+(5006, 102, 'Medical Equipment Preventive Maintenance Schedule', '2024-04-01'),
+(5007, 102, 'Employee Professional Conduct & Ethics', '2023-12-01'),
+
+-- Policies for Global Care Chicago East (Branch 103)
+(5008, 103, 'Telemedicine Security & Privacy Guidelines', '2024-05-01'),
+(5009, 103, 'Ambulance Dispatch & Response Time Standards', '2024-01-15'),
+(5010, 103, 'Waste Management & Biohazard Disposal', '2024-02-01');
+
+INSERT INTO BranchPolicy (policy_id, branch_id, policy_name, effective_date)
+VALUES 
+-- Policies for Nexus Delhi Central (Branch 104)
+(5011, 104, 'National Health Mission Compliance Protocol', '2024-01-01'),
+(5012, 104, 'Monsoon Season Epidemic Preparedness Plan', '2024-06-01'),
+(5013, 104, 'Centralized Drug Procurement & Inventory Policy', '2024-03-15'),
+
+-- Policies for Nexus Zydus Heights (Branch 105)
+(5014, 105, 'Clinical Research & Ethics Committee Guidelines', '2024-01-10'),
+(5015, 105, 'Organ Transplant Coordination & Legal Compliance', '2024-02-20'),
+(5016, 105, 'Regional Language Patient Communication Policy', '2023-11-15'),
+
+-- Policies for Nexus Manhattan Central (Branch 106)
+(5017, 106, 'Advanced Cybersecurity & Patient Data Encryption', '2024-01-01'),
+(5018, 106, 'Affordable Care Act (ACA) Reporting Standards', '2024-01-20'),
+(5019, 106, 'Mass Casualty Incident (MCI) Response Plan', '2024-04-10'),
+
+-- Policies for Nexus Jersey Heights (Branch 107)
+(5020, 107, 'Multi-State Medical Licensing Compliance', '2024-02-01'),
+(5021, 107, 'Laboratory Safety & Radiation Protection', '2024-03-05'),
+
+-- Policies for Gleneagles HealthCity (Branch 108)
+(5022, 108, 'NHS Partnership & Referral Management Policy', '2024-01-01'),
+(5023, 108, 'General Data Protection Regulation (GDPR) Audit', '2024-01-15'),
+(5024, 108, 'International Patient Concierge & Billing Protocol', '2024-05-10');
+
+-- =====================================================
+-- 2️⃣ HR STRUCTURE
+-- =====================================================
+
+CREATE TABLE Employee (
+    employee_id BIGINT PRIMARY KEY,
+    department_id BIGINT,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    hire_date DATE,
+    employment_status VARCHAR(50),
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+CREATE TABLE Doctor (
+    employee_id BIGINT PRIMARY KEY,
+    specialization VARCHAR(255),
+    license_number VARCHAR(100),
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Nurse (
+    employee_id BIGINT PRIMARY KEY,
+    certification VARCHAR(255),
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Technician (
+    employee_id BIGINT PRIMARY KEY,
+    skill_area VARCHAR(255),
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE CleaningStaff (
+    employee_id BIGINT PRIMARY KEY,
+    assigned_area VARCHAR(255),
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE AdministrativeStaff (
+    employee_id BIGINT PRIMARY KEY,
+    designation VARCHAR(255),
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE EmployeeShift (
+    shift_id BIGINT PRIMARY KEY,
+    employee_id BIGINT,
+    shift_date DATE,
+    start_time TIME,
+    end_time TIME,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Payroll (
+    payroll_id BIGINT PRIMARY KEY,
+    employee_id BIGINT,
+    salary DECIMAL(15, 2),
+    pay_date DATE,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+%% =====================================================
+%% 3️⃣ SECURITY
+%% =====================================================
+
+CREATE TABLE UserAccount (
+    user_id BIGINT PRIMARY KEY,
+    employee_id BIGINT,
+    username VARCHAR(100),
+    password_hash VARCHAR(255),
+    account_status VARCHAR(50),
+    last_login DATETIME,
+    password_changed_at DATETIME,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Role (
+    role_id BIGINT PRIMARY KEY,
+    role_name VARCHAR(100)
+);
+
+CREATE TABLE UserRole (
+    user_id BIGINT,
+    role_id BIGINT,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES UserAccount(user_id),
+    FOREIGN KEY (role_id) REFERENCES Role(role_id)
+);
+
+CREATE TABLE AuditLog (
+    log_id BIGINT PRIMARY KEY,
+    user_id BIGINT,
+    action VARCHAR(255),
+    log_time DATETIME,
+    old_value VARCHAR(100),
+    new_value VARCHAR(100),
+    FOREIGN KEY (user_id) REFERENCES UserAccount(user_id)
+);
+
+-- =====================================================
+--  4  PATIENT MANAGEMENT
+--  =====================================================
+
+CREATE TABLE Patient (
+    patient_id BIGINT PRIMARY KEY,
+    branch_id BIGINT,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    dob DATE,
+    gender VARCHAR(20),
+    phone VARCHAR(50),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE EmergencyContact (
+    contact_id BIGINT PRIMARY KEY,
+    patient_id BIGINT,
+    name VARCHAR(255),
+    phone VARCHAR(50),
+    relationship VARCHAR(100),
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
+);
+
+CREATE TABLE Insurance (
+    insurance_id BIGINT PRIMARY KEY,
+    provider_name VARCHAR(255),
+    policy_number VARCHAR(100),
+    coverage_details TEXT
+);
+
+CREATE TABLE Appointment (
+    appointment_id BIGINT PRIMARY KEY,
+    patient_id BIGINT,
+    doctor_id BIGINT,
+    appointment_date DATETIME,
+    status VARCHAR(50),
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctor(employee_id)
+);
+
+CREATE TABLE Admission (
+    admission_id BIGINT PRIMARY KEY,
+    patient_id BIGINT,
+    branch_id BIGINT,
+    admission_date DATETIME,
+    discharge_date DATETIME,
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE DischargeSummary (
+    discharge_id BIGINT PRIMARY KEY,
+    admission_id BIGINT,
+    summary TEXT,
+    FOREIGN KEY (admission_id) REFERENCES Admission(admission_id)
+);
+
+-- =====================================================
+-- 5️⃣ CLINICAL
+-- =====================================================
+-- Lookup table for Units (True 5NF instead of ENUM)
+CREATE TABLE UnitOfMeasure (
+    uom_id INT PRIMARY KEY,
+    unit_name VARCHAR(50) NOT NULL, -- e.g., 'Millimeters of Mercury'
+    unit_symbol VARCHAR(10) NOT NULL -- e.g., 'mmHg', 'bpm', '°C', 'mg/dL'
+);
+
+-- The central event table
+CREATE TABLE Encounter (
+    encounter_id BIGINT PRIMARY KEY,
+    patient_id BIGINT NOT NULL,
+    doctor_id BIGINT NOT NULL,
+    branch_id BIGINT NOT NULL,
+    encounter_type VARCHAR(50), -- 'Inpatient', 'Outpatient', 'ER'
+    start_time DATETIME NOT NULL,
+    end_time DATETIME,
+    reason_for_visit TEXT,
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctor(employee_id),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE MedicalRecord (
+    record_id BIGINT PRIMARY KEY,
+    patient_id BIGINT,
+    created_date DATE,
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
+);
+
+CREATE TABLE Diagnosis (
+    diagnosis_id BIGINT PRIMARY KEY,
+    encounter_id BIGINT NOT NULL,
+    icd_code VARCHAR(10), -- International Classification of Diseases code
+    diagnosis_details TEXT,
+    is_provisional BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (encounter_id) REFERENCES Encounter(encounter_id)
+);
+
+CREATE TABLE Prescription (
+    prescription_id BIGINT PRIMARY KEY,
+    encounter_id BIGINT NOT NULL,
+    doctor_id BIGINT NOT NULL,
+    medicine_id BIGINT NOT NULL,
+    dosage VARCHAR(100),
+    frequency VARCHAR(100),
+    duration VARCHAR(100),
+    prescribed_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (encounter_id) REFERENCES Encounter(encounter_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctor(employee_id),
+    FOREIGN KEY (medicine_id) REFERENCES Medicine(medicine_id)
+);
+
+CREATE TABLE LabOrder (
+    lab_order_id BIGINT PRIMARY KEY,
+    encounter_id BIGINT NOT NULL,
+    order_date DATE,
+    priority VARCHAR(20), -- 'Routine' or 'Stat'
+    FOREIGN KEY (encounter_id) REFERENCES Encounter(encounter_id)
+);
+
+CREATE TABLE LabResult (
+    result_id BIGINT PRIMARY KEY,
+    lab_order_id BIGINT NOT NULL,
+    result_value NUMERIC(10, 3), 
+    uom_id INT,
+    result_details TEXT,
+    is_abnormal BOOLEAN, -- Flag for the UI
+    FOREIGN KEY (lab_order_id) REFERENCES LabOrder(lab_order_id),
+    FOREIGN KEY (uom_id) REFERENCES UnitOfMeasure(uom_id)
+);
+
+CREATE TABLE ProcedureTable (
+    procedure_id BIGINT PRIMARY KEY,
+    record_id BIGINT,
+    procedure_date DATE,
+    description TEXT,
+    FOREIGN KEY (record_id) REFERENCES MedicalRecord(record_id)
+);
+
+CREATE TABLE Surgery (
+    surgery_id BIGINT PRIMARY KEY,
+    record_id BIGINT,
+    surgeon_id BIGINT,
+    surgery_date DATE,
+    FOREIGN KEY (record_id) REFERENCES MedicalRecord(record_id),
+    FOREIGN KEY (surgeon_id) REFERENCES Doctor(employee_id)
+);
+
+
+
+-- %% =====================================================
+-- %% 6️⃣ AMBULANCE & AI
+-- %% =====================================================
+
+CREATE TABLE Ambulance (
+    ambulance_id BIGINT PRIMARY KEY,
+    branch_id BIGINT,
+    vehicle_number VARCHAR(50),
+    status VARCHAR(50),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE AmbulanceTrip (
+    trip_id BIGINT PRIMARY KEY,
+    ambulance_id BIGINT,
+    patient_id BIGINT,
+    trip_date DATETIME,
+    FOREIGN KEY (ambulance_id) REFERENCES Ambulance(ambulance_id),
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
+);
+
+CREATE TABLE EmergencyCase (
+    case_id BIGINT PRIMARY KEY,
+    patient_id BIGINT,
+    arrival_time DATETIME,
+    severity_level VARCHAR(50),
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
+);
+
+CREATE TABLE TelemedicineSession (
+    session_id BIGINT PRIMARY KEY,
+    patient_id BIGINT,
+    doctor_id BIGINT,
+    session_time DATETIME,
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctor(employee_id)
+);
+
+CREATE TABLE TelemedicinePrescription (
+    tele_prescription_id BIGINT PRIMARY KEY,
+    session_id BIGINT,
+    details TEXT,
+    FOREIGN KEY (session_id) REFERENCES TelemedicineSession(session_id)
+);
+
+CREATE TABLE SessionRecording (
+    recording_id BIGINT PRIMARY KEY,
+    session_id BIGINT,
+    file_path VARCHAR(512),
+    FOREIGN KEY (session_id) REFERENCES TelemedicineSession(session_id)
+);
+
+CREATE TABLE ICUUnit (
+    icu_id BIGINT PRIMARY KEY,
+    branch_id BIGINT,
+    unit_name VARCHAR(100),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE ICUBed (
+    bed_id BIGINT PRIMARY KEY,
+    icu_id BIGINT,
+    bed_number VARCHAR(50),
+    FOREIGN KEY (icu_id) REFERENCES ICUUnit(icu_id)
+);
+
+CREATE TABLE PatientMonitoringDevice (
+    device_id BIGINT PRIMARY KEY,
+    bed_id BIGINT,
+    device_type VARCHAR(100),
+    FOREIGN KEY (bed_id) REFERENCES ICUBed(bed_id)
+);
+
+CREATE TABLE VitalReading (
+    reading_id BIGINT PRIMARY KEY,
+    device_id BIGINT,
+    encounter_id BIGINT, -- Added link to Encounter
+    reading_time DATETIME,
+    value NUMERIC(8, 2), -- Fixed precision for math operations
+    uom_id INT, -- Linked to lookup table
+    FOREIGN KEY (device_id) REFERENCES PatientMonitoringDevice(device_id),
+    FOREIGN KEY (encounter_id) REFERENCES Encounter(encounter_id),
+    FOREIGN KEY (uom_id) REFERENCES UnitOfMeasure(uom_id)
+);
+
+-- %% =====================================================
+-- %% 9PARKING
+-- %% =====================================================
+
+CREATE TABLE ParkingLot (
+    lot_id BIGINT PRIMARY KEY,
+    branch_id BIGINT,
+    lot_name VARCHAR(100),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE ParkingSlot (
+    slot_id BIGINT PRIMARY KEY,
+    lot_id BIGINT,
+    slot_number VARCHAR(50),
+    slot_type VARCHAR(50),
+    FOREIGN KEY (lot_id) REFERENCES ParkingLot(lot_id)
+);
+
+CREATE TABLE ParkingTicket (
+    ticket_id BIGINT PRIMARY KEY,
+    slot_id BIGINT,
+    vehicle_number VARCHAR(50),
+    entry_time DATETIME,
+    exit_time DATETIME,
+    FOREIGN KEY (slot_id) REFERENCES ParkingSlot(slot_id)
+);
+
+CREATE TABLE Medicine (
+    medicine_id BIGINT PRIMARY KEY,
+    name VARCHAR(255),
+    manufacturer VARCHAR(255),
+    expiry_date DATE
+);
+
+CREATE TABLE PharmacyStock (
+    stock_id BIGINT PRIMARY KEY,
+    medicine_id BIGINT,
+    branch_id BIGINT,
+    quantity INT,
+    FOREIGN KEY (medicine_id) REFERENCES Medicine(medicine_id),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE InventoryItem (
+    item_id BIGINT PRIMARY KEY,
+    item_name VARCHAR(255),
+    category VARCHAR(100)
+);
+
+CREATE TABLE InventoryTransaction (
+    transaction_id BIGINT PRIMARY KEY,
+    item_id BIGINT,
+    branch_id BIGINT,
+    transaction_type VARCHAR(50),
+    quantity INT,
+    transaction_date DATETIME,
+    FOREIGN KEY (item_id) REFERENCES InventoryItem(item_id),
+    FOREIGN KEY (branch_id) REFERENCES BranchHospital(branch_id)
+);
+
+CREATE TABLE Bill (
+    bill_id BIGINT PRIMARY KEY,
+    patient_id BIGINT NOT NULL,
+    encounter_id BIGINT NOT NULL, -- Link billing to the specific visit
+    total_amount DECIMAL(15, 2),
+    bill_date DATETIME,
+    status VARCHAR(20), -- 'Unpaid', 'Paid', 'Insurance Pending'
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+    FOREIGN KEY (encounter_id) REFERENCES Encounter(encounter_id)
+);
+
+CREATE TABLE BillItem (
+    bill_item_id BIGINT PRIMARY KEY,
+    bill_id BIGINT,
+    description VARCHAR(255),
+    amount DECIMAL(15, 2),
+    FOREIGN KEY (bill_id) REFERENCES Bill(bill_id)
+);
+
+CREATE TABLE Payment (
+    payment_id BIGINT PRIMARY KEY,
+    bill_id BIGINT,
+    payment_date DATETIME,
+    amount DECIMAL(15, 2),
+    payment_method VARCHAR(50),
+    FOREIGN KEY (bill_id) REFERENCES Bill(bill_id)
+);
+-- 1. Equipment Categories (e.g., Radiology, Life Support)
+CREATE TABLE EquipmentCategory (
+    category_id BIGINT PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL
+);
+
+-- 2. Technicians' Skills (Binary Relationship: Tech + Category)
+-- 5NF: Only store the atomic fact of capability
+CREATE TABLE TechnicianSkill (
+    technician_id BIGINT,
+    category_id BIGINT,
+    certification_level VARCHAR(50),
+    PRIMARY KEY (technician_id, category_id),
+    FOREIGN KEY (technician_id) REFERENCES Technician(employee_id),
+    FOREIGN KEY (category_id) REFERENCES EquipmentCategory(category_id)
+);
+
+-- 3. Technicians' Departmental Access (Binary Relationship: Tech + Dept)
+-- 5NF: Only store the atomic fact of location authority
+CREATE TABLE TechnicianDepartmentAssignment (
+    technician_id BIGINT,
+    department_id BIGINT,
+    assignment_date DATE,
+    PRIMARY KEY (technician_id, department_id),
+    FOREIGN KEY (technician_id) REFERENCES Technician(employee_id),
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+
+-- 4. Equipment Inventory
+-- 5NF: Atomic fact of where equipment is and what type it is
+CREATE TABLE MedicalEquipment (
+    equipment_id BIGINT PRIMARY KEY,
+    department_id BIGINT,
+    category_id BIGINT,
+    equipment_name VARCHAR(255) NOT NULL,
+    model_number VARCHAR(100),
+    serial_number VARCHAR(100) UNIQUE,
+    purchase_date DATE,
+    warranty_expiry DATE,
+    status VARCHAR(50), 
+    FOREIGN KEY (department_id) REFERENCES Department(department_id),
+    FOREIGN KEY (category_id) REFERENCES EquipmentCategory(category_id)
+);
+
+-- 5. Maintenance Log
+-- This records the ACTUAL occurrence. We no longer need a separate 
+-- "Assignment" table because the assignment is derived from the tables above.
+CREATE TABLE MaintenanceLog (
+    maintenance_id BIGINT PRIMARY KEY,
+    equipment_id BIGINT,
+    technician_id BIGINT,
+    maintenance_date DATETIME,
+    maintenance_type VARCHAR(50), 
+    description TEXT,
+    cost DECIMAL(15, 2),
+    FOREIGN KEY (equipment_id) REFERENCES MedicalEquipment(equipment_id),
+    FOREIGN KEY (technician_id) REFERENCES Technician(employee_id)
+);
